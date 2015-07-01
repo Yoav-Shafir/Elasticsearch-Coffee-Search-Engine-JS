@@ -1,0 +1,7 @@
+{
+  "name": "Coffee Search Engine",
+  "description": "AngularJS search engine based on Node.js and Elastic Search",
+  "repository": "",
+  "logo": "http://node-js-sample.herokuapp.com/node.svg",
+  "keywords": ["node", "express", "static"]
+}

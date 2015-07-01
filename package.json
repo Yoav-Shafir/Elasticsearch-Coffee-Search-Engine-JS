@@ -1,0 +1,27 @@
+{
+  "name": "coffee-searchengine",
+  "version": "0.0.1",
+  "description": "AngularJS search engine backed by node.js and Elastic Search",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "jade": "1.11.0",
+    "express": "4.13.0",
+    "elasticsearch": "5.0.0"
+  },
+  "engines": {
+    "node": "0.10.37"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ],
+  "license": "MIT"
+}

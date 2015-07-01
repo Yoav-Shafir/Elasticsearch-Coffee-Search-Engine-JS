@@ -1,0 +1,78 @@
+doctype html
+html(class="no-js", lang="en", ng-app="app")
+  head
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    title Build Search Applications with Elasticsearch and AngularJS
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    link(href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" type="text/css")
+    link(href="css/app.css" rel="stylesheet" type="text/css")
+    link(href="//fonts.googleapis.com/css?family=Open+Sans:300,400&amp;subset=latin,greek-ext" rel="stylesheet" type="text/css")
+  
+  body(ng-controller="AppCtrl")
+    svg.spinner(ng-show="bucket.loader", width="40px", height="40px", viewBox="0 0 66 66", xmlns="http://www.w3.org/2000/svg")
+        circle.path(fill="none", stroke-width="6", stroke-linecap="round", cx="33", cy="33", r="30")
+    div.container(ng-cloak) 
+      form(ng-submit="submit($event)")
+        div.row
+          div.col-lg-1
+            img#mug.visible(width="75", src="img/coffee_mug.png")
+          div.search.col-lg-9
+            input.form-control.input-lg(type="text", ng-model="bucket.q", ng-change="onQChange();", placeholder="Type \"coffee\"", autofocus)
+            div.suggestions(ng-show="bucket.suggestions.length")
+              ul
+                li(ng-repeat="suggestion in bucket.suggestions", , ng-class="{active:suggestion.active == true}", ng-click="onSuggesionClick();") 
+                  em(ng-bind="suggestion.text")
+          div.col-lg-2
+            button.btn.btn-success.btn-lg(type="submit") Search
+        div.row
+          div.col-lg-1.sort-by Sort by:
+          div.col-lg-2.dropdown
+            select.form-control(ng-model="bucket.selectedSort", ng-options="sort.label for sort in bucket.options", ng-change="onSortChange();")       
+
+      div.summary(ng-show="bucket.showSummary")
+        h4 Found&nbsp;
+          u(ng-bind="bucket.totalHits")
+          span &nbsp;results for  
+            i 
+              span "
+              strong(ng-bind="bucket.lastQ")
+              span "
+
+      button.btn.btn-primary.btn-sm(type="button", ng-click="next();", ng-show="hasNext();") Load More Results
+      
+      div.row
+        div.col-lg-10.posts-wrap
+          ul.posts 
+            li(ng-repeat="item in bucket.items")
+              h4
+                strong(ng-bind-html="item._source.Title")
+              p(ng-bind-html="item._source.Body")
+              div
+                span.post-info created at 
+                  span(ng-bind="item._source.CreationDate | date : 'fullDate'") 
+                  span &nbsp;| 
+                  span(ng-bind="item._source.ViewCount") 
+                  span &nbsp;views
+          
+        div.col-lg-2
+          div.filters-title(ng-show="bucket.filters.length") Filter also by category:
+          ul.filters
+            li(ng-repeat="filter in bucket.filters", ng-class="{active:filter.key == bucket.selectedFilter.key}")
+              a(href="#", ng-click="onFilterClick(filter)") 
+                span(ng-bind="filter.key") 
+                span &nbsp;(
+                span(ng-bind="filter.doc_count")
+                span )
+      hr
+
+      h1.search-title(ng-show="bucket.foundHits") 
+        span Results for 
+        span(ng-bind="bucket.q")
+        span(ng-bind="(bucket.totalHits)")
+
+      button.btn.btn-primary.btn-sm(type="button", ng-click="next();", ng-show="hasNext();") Load More Results   
+    
+    script(src="js/vendor/angular.min.js")
+    script(src="js/vendor/angular-sanitize.min.js")
+    script(src="js/app.js")
